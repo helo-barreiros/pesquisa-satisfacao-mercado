@@ -1,0 +1,14 @@
+{
+  "name": "db-local",
+  "private": true,
+  "description": "PostgreSQL local (PGlite) para desenvolver e apresentar o projeto sem instalar nada",
+  "type": "module",
+  "scripts": {
+    "start": "node servidor.mjs",
+    "resetar": "node servidor.mjs --resetar"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.6.0",
+    "@electric-sql/pglite-socket": "0.3.0"
+  }
+}
