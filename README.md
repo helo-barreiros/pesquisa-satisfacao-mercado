@@ -14,11 +14,17 @@ Sistema web em que a gerência de um mercado cadastra questões, monta pesquisas
 
 - As questões usam uma **escala de 1 a 5** e são **agrupadas por tema**: atendimento, limpeza, preços, filas etc. Também há questões de múltipla escolha e de texto livre.
 - As pesquisas podem ser **anônimas**:
-  - a tabela `convite` guarda **quem** já respondeu;
-  - as tabelas `submissao` e `resposta` guardam **o que** foi respondido;
-  - não existe ligação entre elas, e um gatilho no banco impede gravar o usuário numa submissão de pesquisa anônima.
+    - a tabela `convite` guarda **quem** já respondeu;
+    - as tabelas `submissao` e `resposta` guardam **o que** foi respondido;
+    - não existe ligação entre elas, e um gatilho no banco impede gravar o usuário numa submissão de pesquisa anônima.
 - Cada pessoa responde cada pesquisa **uma única vez**, e só dentro do período da pesquisa.
-- Os relatórios comparam **temas, períodos e grupos** de respondentes: Clube de Vantagens, cliente eventual e funcionário.
+- Os relatórios comparam **temas** e **grupos** de respondentes (Clube de Vantagens, cliente eventual e funcionário) num **período** escolhido.
+
+## Modelagem
+
+![DER](<docs/Diagrama pesquisa mercado.png>)
+
+O esquema relacional e a justificativa da 3FN, tabela por tabela, estão em [docs/Esquema +3FN.pdf](<docs/Esquema +3FN.pdf>).
 
 ## Arquivos
 
@@ -51,14 +57,17 @@ A aplicação já vem configurada para esse banco. Não precisa mudar nada.
 
 1. Crie um projeto no [Neon](https://neon.tech) e abra o **SQL Editor**.
 2. Cole e execute o `database/schema.sql` e depois o `database/carga.sql`, nessa ordem.
-3. Na tela do Neon, clique em **Connect** e copie os dados de conexão (host, banco, usuário e senha).
+3. Na tela do Neon, clique em **Connect**, **desligue "Connection pooling"** e copie a string de conexão, que tem o formato
+   `postgresql://USUARIO:SENHA@HOST/BANCO?sslmode=require`.
 4. No IntelliJ, em **Run → Edit Configurations → Environment variables**, defina:
    ```
    DB_URL=jdbc:postgresql://HOST/BANCO?sslmode=require
-   DB_USER=usuario
-   DB_PASSWORD=senha
+   DB_USER=USUARIO
+   DB_PASSWORD=SENHA
    DB_POOL_SIZE=5
    ```
+   A URL começa com `jdbc:postgresql://` e **não** leva usuário nem senha.
+5. Para voltar aos dados iniciais, rode de novo o `schema.sql` e o `carga.sql`.
 
 ### 2. Aplicação
 
@@ -83,11 +92,25 @@ Para testar uma resposta, use a **"Pesquisa Black Friday 2026"**: ela está aber
 
 As consultas comentadas estão em `database/relatorios.sql`. Na tela, os valores de exemplo viram filtros.
 
+Recursos SQL usados em cada relatório:
+
+| Recurso | Rel. 1 | Rel. 2 | Rel. 3 |
+|---|:-:|:-:|:-:|
+| Junção interna (JOIN) | ✓ | ✓ | |
+| Junção externa (LEFT JOIN) | | | ✓ |
+| Agregação e agrupamento (COUNT, AVG, SUM, GROUP BY) | ✓ | ✓ | ✓ |
+| HAVING | ✓ | ✓ | |
+| Subconsulta | | ✓ | |
+| Ordenação e ranking (ORDER BY, RANK, FETCH FIRST) | ✓ | ✓ | ✓ |
+| Filtros (datas, IN, LIKE) | ✓ BETWEEN, IN | | ✓ LIKE |
+
 ### 1. Satisfação média por tema
 
 **Objetivo:** comparar a média de cada tema num período, para os grupos escolhidos.
+
 **Recursos:** JOIN, AVG, COUNT, SUM, GROUP BY, HAVING, ORDER BY, filtro de datas (BETWEEN) e IN.
 
+![Relatório 1](docs/relatorio-01.png)
 
 ```sql
 SELECT t.nome AS tema,
@@ -109,8 +132,10 @@ ORDER BY media DESC;
 ### 2. Ranking das questões com pior avaliação
 
 **Objetivo:** mostrar as 10 questões com pior média, entre as que estão abaixo da média geral.
+
 **Recursos:** JOIN, AVG, COUNT, SUM, GROUP BY, HAVING com subconsulta, RANK() e FETCH FIRST.
 
+![Relatório 2](docs/relatorio-02.png)
 
 ```sql
 SELECT RANK() OVER (ORDER BY AVG(r.valor_escala)) AS posicao,
@@ -132,8 +157,10 @@ FETCH FIRST 10 ROWS ONLY;
 ### 3. Participação nas pesquisas
 
 **Objetivo:** mostrar quantos convidados responderam cada pesquisa, com busca pelo título.
+
 **Recursos:** LEFT JOIN (mantém pesquisas sem convites), COUNT, GROUP BY, ORDER BY e LIKE.
 
+![Relatório 3](docs/relatorio-03.png)
 
 ```sql
 SELECT p.titulo,
@@ -155,7 +182,7 @@ ORDER BY p.inicio;
 | Parte | Tecnologia |
 |---|---|
 | Banco de dados | PostgreSQL (local com PGlite, ou Neon) |
-| Back-end | Java 25 com Spring Boot e JDBC (`JdbcTemplate`), DAOs próprios, sem JPA |
+| Back-end | Java 21+ (testado no 25) com Spring Boot e JDBC (`JdbcTemplate`), DAOs próprios, sem JPA |
 | Front-end | HTML, CSS e JavaScript; gráficos de barras feitos com HTML/CSS |
 
 O código segue as camadas **tela → controller → service → DAO → banco**. As gravações que mexem em mais de uma tabela rodam numa **transação** (`@Transactional`): cadastrar uma questão com as alternativas, montar a pesquisa, convidar e responder. Se algum passo falhar, nada fica gravado.
