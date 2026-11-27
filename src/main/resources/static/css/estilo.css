@@ -161,3 +161,18 @@ tr:hover td { background: #fafcfb; }
 .escala .extremo { color: var(--suave); font-size: 13px; }
 .opcoes label { display: flex; align-items: center; gap: 8px; font-weight: 400; margin: 6px 0; cursor: pointer; }
 .opcoes input { width: auto; }
+
+/* ---------- relatórios gráfico de barras  ---------- */
+.grafico { display: grid; gap: 6px; margin: 18px 0; }
+.barra { display: grid; grid-template-columns: minmax(140px, 300px) 1fr 70px; gap: 12px; align-items: center; font-size: 13.5px; }
+.barra .rotulo { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.barra .trilho { display: flex; gap: 2px; height: 18px; background: #eef1f4; border-radius: 4px; overflow: hidden; }
+.barra .trilho span { height: 100%; }
+.barra .num { text-align: right; font-variant-numeric: tabular-nums; }
+.cor-verde { background: var(--verde); }
+.cor-cinza { background: #b9c2cc; }
+.legenda { display: flex; gap: 16px; margin-top: 14px; font-size: 13px; color: var(--suave); }
+.legenda i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
+.opcoes-linha { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 8px 0; }
+.opcoes-linha label { display: flex; align-items: center; gap: 6px; margin: 0; font-weight: 400; cursor: pointer; }
+.opcoes-linha input { width: auto; }

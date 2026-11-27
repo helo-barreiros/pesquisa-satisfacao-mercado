@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Relatórios · Pesquisa de Satisfação</title>
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<main>
+  <h1>Relatórios</h1>
+  <p class="sub">Notas de 1 (péssimo) a 5 (ótimo). As pesquisas anônimas entram só pelo grupo de quem respondeu.</p>
+
+  <!-- Relatório 1 -->
+  <section class="cartao">
+    <h2>1. Satisfação média por tema</h2>
+    <form id="filtro-temas" class="linha">
+      <div><label for="inicio">De</label><input type="date" id="inicio" required></div>
+      <div><label for="fim">Até</label><input type="date" id="fim" required></div>
+      <div><label>Grupos</label><div id="grupos" class="opcoes-linha"></div></div>
+      <div class="fixo"><button type="submit">Filtrar</button></div>
+    </form>
+    <div class="grafico" id="grafico-temas"></div>
+    <table>
+      <thead><tr><th>Tema</th><th class="num">Média</th><th class="num">% satisfeitos (4 e 5)</th><th class="num">Respostas</th></tr></thead>
+      <tbody id="tabela-temas"></tbody>
+    </table>
+  </section>
+
+  <!-- Relatório 2 -->
+  <section class="cartao">
+    <h2>2. Ranking: questões com pior avaliação</h2>
+    <p class="sub">As 10 piores entre as questões com média abaixo da média geral.</p>
+    <div class="grafico" id="grafico-ranking"></div>
+    <table>
+      <thead><tr><th class="num">#</th><th>Questão</th><th>Tema</th><th class="num">Média</th><th class="num">% insatisfeitos (1 e 2)</th><th class="num">Respostas</th></tr></thead>
+      <tbody id="tabela-ranking"></tbody>
+    </table>
+  </section>
+
+  <!-- Relatório 3 -->
+  <section class="cartao">
+    <h2>3. Participação nas pesquisas</h2>
+    <form id="filtro-participacao" class="linha">
+      <div><label for="busca">Buscar no título</label><input type="text" id="busca" placeholder="Ex.: satisfação"></div>
+      <div class="fixo"><button type="submit">Buscar</button></div>
+    </form>
+    <div class="legenda"><span><i class="cor-verde"></i>Responderam</span><span><i class="cor-cinza"></i>Pendentes</span></div>
+    <div class="grafico" id="grafico-participacao"></div>
+    <table>
+      <thead><tr><th>Pesquisa</th><th>Período</th><th class="num">Convidados</th><th class="num">Responderam</th><th class="num">Pendentes</th><th class="num">Taxa</th></tr></thead>
+      <tbody id="tabela-participacao"></tbody>
+    </table>
+  </section>
+</main>
+<script src="js/comum.js"></script>
+<script src="js/relatorios.js"></script>
+</body>
+</html>
