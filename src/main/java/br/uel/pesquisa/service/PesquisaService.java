@@ -1,6 +1,8 @@
 package br.uel.pesquisa.service;
 
+import br.uel.pesquisa.dao.ConviteDao;
 import br.uel.pesquisa.dao.PesquisaDao;
+import br.uel.pesquisa.dto.ConviteRequest;
 import br.uel.pesquisa.dto.ItemNovo;
 import br.uel.pesquisa.dto.NovaPesquisa;
 import br.uel.pesquisa.model.Pesquisa;
@@ -20,9 +22,11 @@ import java.util.Set;
 public class PesquisaService {
 
     private final PesquisaDao pesquisaDao;
+    private final ConviteDao conviteDao;
 
-    public PesquisaService(PesquisaDao pesquisaDao) {
+    public PesquisaService(PesquisaDao pesquisaDao, ConviteDao conviteDao) {
         this.pesquisaDao = pesquisaDao;
+        this.conviteDao = conviteDao;
     }
 
     public Pesquisa buscar(int idPesquisa) {
@@ -55,10 +59,6 @@ public class PesquisaService {
                 pesquisaDao.contarSubmissoes(idPesquisa) > 0);
     }
 
-    /**
-     * Substitui as questões da pesquisa pela lista recebida (a ordem é a posição na lista).
-     * Apaga e regrava em PESQUISA_QUESTAO, por isso roda numa transação.
-     */
     @Transactional
     public void definirQuestoes(int idPesquisa, List<ItemNovo> itens) {
         buscar(idPesquisa);
@@ -78,6 +78,29 @@ public class PesquisaService {
         for (int i = 0; i < itens.size(); i++) {
             ItemNovo item = itens.get(i);
             pesquisaDao.inserirQuestao(idPesquisa, item.idQuestao(), i + 1, item.obrigatoria());
+        }
+    }
+
+    @Transactional
+    public int convidar(int idPesquisa, ConviteRequest pedido) {
+        buscar(idPesquisa);
+        int novos = 0;
+        if (pedido.grupos() != null) {
+            for (Integer idGrupo : pedido.grupos()) {
+                novos += conviteDao.convidarGrupo(idPesquisa, idGrupo);
+            }
+        }
+        if (pedido.usuarios() != null) {
+            for (Integer idUsuario : pedido.usuarios()) {
+                novos += conviteDao.convidarUsuario(idPesquisa, idUsuario);
+            }
+        }
+        return novos;
+    }
+
+    public void removerConvite(int idPesquisa, int idUsuario) {
+        if (conviteDao.remover(idPesquisa, idUsuario) == 0) {
+            throw new RegraNegocio("Só é possível retirar o convite de quem ainda não respondeu.");
         }
     }
 }
