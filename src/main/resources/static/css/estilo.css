@@ -1,0 +1,146 @@
+:root {
+    --verde: #1f6b45;
+    --verde-escuro: #154d31;
+    --verde-claro: #e8f3ec;
+    --texto: #1d2430;
+    --suave: #5b6573;
+    --borda: #d9dee5;
+    --fundo: #f5f7f9;
+    --perigo: #b42318;
+    --perigo-claro: #fdecea;
+    --aviso: #8a5a00;
+    --aviso-claro: #fff4dc;
+    --raio: 8px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    font-size: 15px;
+    color: var(--texto);
+    background: var(--fundo);
+    line-height: 1.45;
+}
+
+/* ---------- topo ---------- */
+.topo {
+    background: var(--verde);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0 24px;
+    height: 56px;
+}
+.topo .marca { font-weight: 700; font-size: 17px; white-space: nowrap; }
+.topo nav { display: flex; gap: 4px; flex: 1; }
+.topo nav a {
+    color: #dcefe4; text-decoration: none; padding: 8px 12px; border-radius: 6px;
+}
+.topo nav a:hover { background: rgba(255,255,255,.12); color: #fff; }
+.topo nav a.ativo { background: rgba(255,255,255,.2); color: #fff; font-weight: 600; }
+.topo .quem { font-size: 13.5px; color: #dcefe4; white-space: nowrap; }
+.topo .quem button {
+    margin-left: 10px; background: transparent; border: 1px solid rgba(255,255,255,.5);
+    color: #fff; border-radius: 6px; padding: 4px 10px; cursor: pointer;
+}
+
+main { max-width: 1180px; margin: 24px auto; padding: 0 20px 60px; }
+
+h1 { font-size: 24px; margin: 0 0 4px; }
+h2 { font-size: 18px; margin: 0 0 14px; }
+.sub { color: var(--suave); margin: 0 0 20px; }
+
+/* ---------- cartões ---------- */
+.cartao {
+    background: #fff;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.colunas { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 900px) { .colunas { grid-template-columns: 1fr; } }
+
+/* ---------- formulários ---------- */
+label { display: block; font-weight: 600; font-size: 13.5px; margin: 12px 0 4px; }
+input[type=text], input[type=email], input[type=datetime-local], input[type=date], select, textarea {
+    width: 100%; padding: 8px 10px; font: inherit; color: inherit;
+    border: 1px solid var(--borda); border-radius: 6px; background: #fff;
+}
+textarea { min-height: 70px; resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--verde-claro); border-color: var(--verde); }
+.linha { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+.linha > * { flex: 1; min-width: 160px; }
+.linha > .fixo { flex: 0 0 auto; min-width: 0; }
+.check { display: flex; align-items: center; gap: 8px; font-weight: 500; margin-top: 14px; }
+.check input { width: auto; }
+
+button, .botao {
+    font: inherit; font-weight: 600; cursor: pointer;
+    background: var(--verde); color: #fff; border: 1px solid var(--verde);
+    border-radius: 6px; padding: 8px 16px; text-decoration: none; display: inline-block;
+}
+button:hover, .botao:hover { background: var(--verde-escuro); }
+button:disabled { opacity: .5; cursor: not-allowed; }
+button.secundario, .botao.secundario { background: #fff; color: var(--verde); }
+button.secundario:hover { background: var(--verde-claro); }
+button.perigo { background: #fff; color: var(--perigo); border-color: #f0c4c0; }
+button.perigo:hover { background: var(--perigo-claro); }
+button.mini { padding: 3px 9px; font-size: 13px; font-weight: 600; }
+.acoes { margin-top: 18px; display: flex; gap: 10px; }
+
+/* ---------- tabelas ---------- */
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--borda); vertical-align: top; }
+th { font-size: 12.5px; text-transform: uppercase; letter-spacing: .03em; color: var(--suave); background: #fafbfc; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr:hover td { background: #fafcfb; }
+.vazio { color: var(--suave); text-align: center; padding: 24px; }
+.rolagem { max-height: 520px; overflow: auto; border: 1px solid var(--borda); border-radius: 6px; }
+.rolagem table th { position: sticky; top: 0; }
+
+/* ---------- etiquetas ---------- */
+.etiqueta {
+    display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px;
+    border-radius: 999px; background: #eef1f4; color: var(--suave); white-space: nowrap;
+}
+.etiqueta.aberta { background: var(--verde-claro); color: var(--verde); }
+.etiqueta.encerrada { background: #eef1f4; color: var(--suave); }
+.etiqueta.agendada { background: var(--aviso-claro); color: var(--aviso); }
+.etiqueta.anonima { background: #ece9fb; color: #4b3aa8; }
+.etiqueta.pendente { background: var(--aviso-claro); color: var(--aviso); }
+.etiqueta.ok { background: var(--verde-claro); color: var(--verde); }
+
+.alternativas { margin: 4px 0 0; padding-left: 18px; color: var(--suave); font-size: 13.5px; }
+.nota { background: var(--aviso-claro); color: var(--aviso); border-radius: 6px; padding: 10px 12px; margin: 0 0 14px; }
+.info { background: var(--verde-claro); color: var(--verde-escuro); border-radius: 6px; padding: 10px 12px; margin: 0 0 14px; }
+
+/* lista ordenável de questões escolhidas */
+.escolhidas { list-style: none; margin: 0; padding: 0; }
+.escolhidas li {
+    display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center;
+    border: 1px solid var(--borda); border-radius: 6px; padding: 8px 10px; margin-bottom: 6px; background: #fff;
+}
+.escolhidas .pos { font-weight: 700; color: var(--verde); text-align: center; }
+.escolhidas .meta { font-size: 12.5px; color: var(--suave); }
+.escolhidas .botoes { display: flex; gap: 4px; align-items: center; }
+.escolhidas .botoes label { margin: 0 6px 0 0; font-weight: 500; font-size: 12.5px; display: flex; gap: 4px; align-items: center; }
+
+/* ---------- login ---------- */
+.login { max-width: 420px; margin: 9vh auto; }
+.login h1 { color: var(--verde); }
+.usuarios-teste { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.usuarios-teste button { font-weight: 500; font-size: 13px; padding: 4px 10px; }
+
+/* ---------- aviso flutuante ---------- */
+#aviso {
+    position: fixed; right: 20px; bottom: 20px; max-width: 420px; z-index: 50;
+    padding: 12px 16px; border-radius: 8px; color: #fff; background: var(--verde);
+    box-shadow: 0 6px 20px rgba(0,0,0,.18); opacity: 0; transform: translateY(10px);
+    transition: all .2s; pointer-events: none;
+}
+#aviso.visivel { opacity: 1; transform: none; }
+#aviso.erro { background: var(--perigo); }
