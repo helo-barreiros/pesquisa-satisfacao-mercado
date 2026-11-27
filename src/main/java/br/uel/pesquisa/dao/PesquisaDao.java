@@ -1,6 +1,7 @@
 package br.uel.pesquisa.dao;
 
 import br.uel.pesquisa.model.Pesquisa;
+import br.uel.pesquisa.model.ItemPesquisa;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +42,36 @@ public class PesquisaDao {
     public Optional<Pesquisa> buscar(int idPesquisa) {
         return jdbc.query(SELECT + " WHERE p.id_pesquisa = ?", PesquisaDao::mapear, idPesquisa)
                 .stream().findFirst();
+    }
+    public List<ItemPesquisa> listarQuestoes(int idPesquisa) {
+        return jdbc.query("""
+                SELECT pq.id_questao, pq.ordem, pq.obrigatoria, q.enunciado, tq.codigo AS tipo, t.nome AS tema
+                FROM pesquisa_questao pq
+                JOIN questao q       ON q.id_questao = pq.id_questao
+                JOIN tipo_questao tq ON tq.id_tipo   = q.id_tipo
+                JOIN tema t          ON t.id_tema    = q.id_tema
+                WHERE pq.id_pesquisa = ?
+                ORDER BY pq.ordem
+                """, (rs, n) -> new ItemPesquisa(rs.getInt("id_questao"), rs.getInt("ordem"),
+                rs.getBoolean("obrigatoria"), rs.getString("enunciado"), rs.getString("tipo"),
+                rs.getString("tema")), idPesquisa);
+    }
+
+    public void removerQuestoes(int idPesquisa) {
+        jdbc.update("DELETE FROM pesquisa_questao WHERE id_pesquisa = ?", idPesquisa);
+    }
+
+    public void inserirQuestao(int idPesquisa, int idQuestao, int ordem, boolean obrigatoria) {
+        jdbc.update("""
+                INSERT INTO pesquisa_questao (id_pesquisa, id_questao, ordem, obrigatoria)
+                VALUES (?, ?, ?, ?)
+                """, idPesquisa, idQuestao, ordem, obrigatoria);
+    }
+
+    public int contarSubmissoes(int idPesquisa) {
+        Integer n = jdbc.queryForObject("SELECT COUNT(*) FROM submissao WHERE id_pesquisa = ?",
+                Integer.class, idPesquisa);
+        return n == null ? 0 : n;
     }
 
     public int inserir(String titulo, String descricao, LocalDateTime inicio, LocalDateTime fim,

@@ -1,11 +1,19 @@
 package br.uel.pesquisa.service;
 
 import br.uel.pesquisa.dao.PesquisaDao;
+import br.uel.pesquisa.dto.ItemNovo;
 import br.uel.pesquisa.dto.NovaPesquisa;
 import br.uel.pesquisa.model.Pesquisa;
+import br.uel.pesquisa.model.PesquisaDetalhe;
 import br.uel.pesquisa.model.Usuario;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 //Cadastro de pesquisas
 @Service
@@ -39,6 +47,37 @@ public class PesquisaService {
             return pesquisaDao.inserir(titulo, descricao, nova.inicio(), nova.fim(), anonima, admin.id());
         } catch (DuplicateKeyException e) {
             throw new RegraNegocio("Já existe uma pesquisa com esse título.");
+        }
+    }
+    public PesquisaDetalhe detalhar(int idPesquisa) {
+        Pesquisa p = buscar(idPesquisa);
+        return new PesquisaDetalhe(p, pesquisaDao.listarQuestoes(idPesquisa),
+                pesquisaDao.contarSubmissoes(idPesquisa) > 0);
+    }
+
+    /**
+     * Substitui as questões da pesquisa pela lista recebida (a ordem é a posição na lista).
+     * Apaga e regrava em PESQUISA_QUESTAO, por isso roda numa transação.
+     */
+    @Transactional
+    public void definirQuestoes(int idPesquisa, List<ItemNovo> itens) {
+        buscar(idPesquisa);
+        if (pesquisaDao.contarSubmissoes(idPesquisa) > 0) {
+            throw new RegraNegocio("Esta pesquisa já tem respostas: as questões não podem mais ser alteradas.");
+        }
+        if (itens == null || itens.isEmpty()) {
+            throw new RegraNegocio("Escolha pelo menos uma questão.");
+        }
+        Set<Integer> vistos = new HashSet<>();
+        for (ItemNovo item : itens) {
+            if (!vistos.add(item.idQuestao())) {
+                throw new RegraNegocio("A questão " + item.idQuestao() + " foi escolhida duas vezes.");
+            }
+        }
+        pesquisaDao.removerQuestoes(idPesquisa);
+        for (int i = 0; i < itens.size(); i++) {
+            ItemNovo item = itens.get(i);
+            pesquisaDao.inserirQuestao(idPesquisa, item.idQuestao(), i + 1, item.obrigatoria());
         }
     }
 }
