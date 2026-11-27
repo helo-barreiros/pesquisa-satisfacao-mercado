@@ -1,0 +1,16 @@
+# Banco local (PGlite): dependências e dados gerados
+db-local/node_modules/
+db-local/dados/
+
+# Configuração local com connection string/senha
+*.local.properties
+application-local.properties
+.env
+
+# Java / IDEs
+target/
+build/
+out/
+.idea/
+*.iml
+.vscode/
