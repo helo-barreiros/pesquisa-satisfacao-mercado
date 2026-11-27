@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pesquisas · Pesquisa de Satisfação</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<main>
+    <h1>Pesquisas</h1>
+    <p class="sub">Crie uma pesquisa, escolha as questões e convide quem deve responder.</p>
+
+    <section class="cartao">
+        <h2>Pesquisas cadastradas</h2>
+        <table>
+            <thead>
+            <tr><th>Título</th><th>Período</th><th>Situação</th><th class="num">Questões</th>
+                <th class="num">Convidados</th><th class="num">Responderam</th><th></th></tr>
+            </thead>
+            <tbody id="lista"><tr><td colspan="7" class="vazio">Carregando...</td></tr></tbody>
+        </table>
+    </section>
+
+    <section class="cartao">
+        <h2>Nova pesquisa</h2>
+        <form id="form-pesquisa">
+            <label for="titulo">Título</label>
+            <input type="text" id="titulo" required minlength="3" placeholder="Ex.: Satisfação Geral — Dezembro 2026">
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao" placeholder="Para que serve esta pesquisa (opcional)"></textarea>
+            <div class="linha">
+                <div><label for="inicio">Início</label><input type="datetime-local" id="inicio" required></div>
+                <div><label for="fim">Fim</label><input type="datetime-local" id="fim" required></div>
+            </div>
+            <label class="check"><input type="checkbox" id="anonima" checked>
+                Anônima: as respostas não ficam ligadas a quem respondeu</label>
+            <div class="acoes"><button type="submit">Criar e escolher questões</button></div>
+        </form>
+    </section>
+</main>
+<script src="js/comum.js"></script>
+<script src="js/pesquisas.js"></script>
+</body>
+</html>
