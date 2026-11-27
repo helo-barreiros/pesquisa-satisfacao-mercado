@@ -1,9 +1,12 @@
 package br.uel.pesquisa.dao;
 
 import br.uel.pesquisa.model.Convidado;
+import br.uel.pesquisa.model.MinhaPesquisa;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -52,5 +55,29 @@ public class ConviteDao {
     public int remover(int idPesquisa, int idUsuario) {
         return jdbc.update("DELETE FROM convite WHERE id_pesquisa = ? AND id_usuario = ? AND dt_resp IS NULL",
                 idPesquisa, idUsuario);
+    }
+
+
+    // --- Lado do usuário
+
+    private static final String SELECT_MINHAS = """
+            SELECT p.id_pesquisa, p.titulo, p.descricao, p.inicio, p.fim, p.anonima,
+                   (SELECT COUNT(*) FROM pesquisa_questao pq WHERE pq.id_pesquisa = p.id_pesquisa) AS qtd_questoes,
+                   c.dt_convite, c.dt_resp
+            FROM convite c
+            JOIN pesquisa p ON p.id_pesquisa = c.id_pesquisa
+            WHERE c.id_usuario = ?
+            """;
+
+    private static MinhaPesquisa mapearMinha(ResultSet rs, int n) throws SQLException {
+        return new MinhaPesquisa(rs.getInt("id_pesquisa"), rs.getString("titulo"), rs.getString("descricao"),
+                rs.getObject("inicio", LocalDateTime.class), rs.getObject("fim", LocalDateTime.class),
+                rs.getBoolean("anonima"), rs.getInt("qtd_questoes"),
+                rs.getObject("dt_convite", LocalDateTime.class), rs.getObject("dt_resp", LocalDateTime.class));
+    }
+
+    //pesquisas que o usuário foi convidado
+    public List<MinhaPesquisa> listarDoUsuario(int idUsuario) {
+        return jdbc.query(SELECT_MINHAS + " ORDER BY p.fim DESC", ConviteDao::mapearMinha, idUsuario);
     }
 }
