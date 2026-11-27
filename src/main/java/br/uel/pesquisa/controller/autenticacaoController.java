@@ -2,7 +2,7 @@ package br.uel.pesquisa.controller;
 
 import br.uel.pesquisa.config.Sessao;
 import br.uel.pesquisa.dao.UsuarioDao;
-import br.uel.pesquisa.dto.loginRequest;
+import br.uel.pesquisa.dto.LoginRequest;
 import br.uel.pesquisa.model.Usuario;
 import br.uel.pesquisa.service.regraNegocio;
 import jakarta.servlet.http.HttpSession;
@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 /** Login simples: o usuário se identifica só pelo e-mail. */
 @RestController
 @RequestMapping("/api")
-public class autenticacaoController {
+public class AutenticacaoController {
 
     private final UsuarioDao usuarioDao;
 
-    public autenticacaoController(UsuarioDao usuarioDao) {
+    public AutenticacaoController(UsuarioDao usuarioDao) {
         this.usuarioDao = usuarioDao;
     }
 
     @PostMapping("/login")
-    public Usuario login(@RequestBody loginRequest pedido, HttpSession sessao) {
+    public Usuario login(@RequestBody LoginRequest pedido, HttpSession sessao) {
         if (pedido.email() == null || pedido.email().isBlank()) {
             throw new regraNegocio("Informe o e-mail.");
         }

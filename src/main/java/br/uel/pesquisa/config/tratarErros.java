@@ -16,9 +16,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.util.Map;
 
 @RestControllerAdvice
-public class tratarErros {
+public class TratarErros {
 
-    private static final Logger log = LoggerFactory.getLogger(tratarErros.class);
+    private static final Logger log = LoggerFactory.getLogger(TratarErros.class);
 
     @ExceptionHandler(regraNegocio.class)
     public ResponseEntity<Map<String, String>> regra(regraNegocio e) {
