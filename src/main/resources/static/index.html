@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Entrar · Pesquisa de Satisfação</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<main class="login">
+    <div class="cartao">
+        <h1>Pesquisa de Satisfação</h1>
+        <p class="sub">Entre com o seu e-mail.</p>
+        <form id="form-login">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" required autofocus placeholder="voce@email.com">
+            <div class="acoes"><button type="submit">Entrar</button></div>
+        </form>
+        <label style="margin-top:22px">Usuários de teste</label>
+        <div class="usuarios-teste">
+            <button type="button" class="secundario" data-email="admin@mercado.com">Administração</button>
+            <button type="button" class="secundario" data-email="ana.souza@email.com">Ana (clube)</button>
+            <button type="button" class="secundario" data-email="nicolas.araujo@email.com">Nicolas (eventual)</button>
+            <button type="button" class="secundario" data-email="adriana.monteiro@email.com">Adriana (funcionária)</button>
+        </div>
+    </div>
+</main>
+<script src="js/comum.js"></script>
+<script>
+    async function entrar(email) {
+        try {
+            const usuario = await API.post('/api/login', { email });
+            location.href = usuario.papel === 'ADMIN' ? 'pesquisas.html' : 'minhas.html';
+        } catch (e) {
+            aviso(e.message, 'erro');
+        }
+    }
+    document.getElementById('form-login').onsubmit = (ev) => {
+        ev.preventDefault();
+        entrar(document.getElementById('email').value);
+    };
+    document.querySelectorAll('[data-email]').forEach((b) => (b.onclick = () => entrar(b.dataset.email)));
+</script>
+</body>
+</html>
