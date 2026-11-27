@@ -1,8 +1,8 @@
 package br.uel.pesquisa.service;
 
-public class regraNegocio extends RuntimeException {
+public class RegraNegocio extends RuntimeException {
 
-    public regraNegocio(String mensagem) {
+    public RegraNegocio(String mensagem) {
         super(mensagem);
     }
 }

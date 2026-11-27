@@ -59,6 +59,16 @@ public class QuestaoDao {
                 .toList();
     }
 
+    public int inserir(String enunciado, int idTipo, int idTema) {
+        return jdbc.queryForObject(
+                "INSERT INTO questao (enunciado, id_tipo, id_tema) VALUES (?, ?, ?) RETURNING id_questao",
+                Integer.class, enunciado, idTipo, idTema);
+    }
+
+    public void inserirAlternativa(int idQuestao, int ordem, String texto) {
+        jdbc.update("INSERT INTO alternativa (id_questao, ordem, texto) VALUES (?, ?, ?)", idQuestao, ordem, texto);
+    }
+
     //Todas as alternativas agrupadas pelo id_questao
     private Map<Integer, List<Alternativa>> alternativasPorQuestao() {
         Map<Integer, List<Alternativa>> mapa = new HashMap<>();

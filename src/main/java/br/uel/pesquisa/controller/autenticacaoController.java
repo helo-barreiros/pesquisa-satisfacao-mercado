@@ -4,7 +4,7 @@ import br.uel.pesquisa.config.Sessao;
 import br.uel.pesquisa.dao.UsuarioDao;
 import br.uel.pesquisa.dto.LoginRequest;
 import br.uel.pesquisa.model.Usuario;
-import br.uel.pesquisa.service.regraNegocio;
+import br.uel.pesquisa.service.RegraNegocio;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,10 +26,10 @@ public class AutenticacaoController {
     @PostMapping("/login")
     public Usuario login(@RequestBody LoginRequest pedido, HttpSession sessao) {
         if (pedido.email() == null || pedido.email().isBlank()) {
-            throw new regraNegocio("Informe o e-mail.");
+            throw new RegraNegocio("Informe o e-mail.");
         }
         Usuario usuario = usuarioDao.buscarPorEmail(pedido.email())
-                .orElseThrow(() -> new regraNegocio("E-mail não cadastrado."));
+                .orElseThrow(() -> new RegraNegocio("E-mail não cadastrado."));
         sessao.setAttribute(Sessao.USUARIO, usuario);
         return usuario;
     }

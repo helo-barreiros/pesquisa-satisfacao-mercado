@@ -1,7 +1,7 @@
 package br.uel.pesquisa.config;
 
-import br.uel.pesquisa.service.naoEncontrado;
-import br.uel.pesquisa.service.regraNegocio;
+import br.uel.pesquisa.service.NaoEncontrado;
+import br.uel.pesquisa.service.RegraNegocio;
 import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +20,13 @@ public class TratarErros {
 
     private static final Logger log = LoggerFactory.getLogger(TratarErros.class);
 
-    @ExceptionHandler(regraNegocio.class)
-    public ResponseEntity<Map<String, String>> regra(regraNegocio e) {
+    @ExceptionHandler(RegraNegocio.class)
+    public ResponseEntity<Map<String, String>> regra(RegraNegocio e) {
         return erro(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
-    @ExceptionHandler(naoEncontrado.class)
-    public ResponseEntity<Map<String, String>> naoEncontrado(naoEncontrado e) {
+    @ExceptionHandler(NaoEncontrado.class)
+    public ResponseEntity<Map<String, String>> naoEncontrado(NaoEncontrado e) {
         return erro(HttpStatus.NOT_FOUND, e.getMessage());
     }
 

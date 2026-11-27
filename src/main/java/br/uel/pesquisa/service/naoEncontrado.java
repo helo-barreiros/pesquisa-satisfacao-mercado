@@ -1,7 +1,7 @@
 package br.uel.pesquisa.service;
 
-public class naoEncontrado extends RuntimeException {
-    public naoEncontrado(String message) {
+public class NaoEncontrado extends RuntimeException {
+    public NaoEncontrado(String message) {
         super(message);
     }
 }
