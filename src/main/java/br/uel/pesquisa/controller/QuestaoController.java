@@ -30,8 +30,8 @@ public class QuestaoController {
     }
 
     @GetMapping
-    public List<Questao> listar(@RequestParam(required = false) Integer tema,
-                                @RequestParam(required = false) String busca) {
+    public List<Questao> listar(@RequestParam(name = "tema", required = false) Integer tema,
+                                @RequestParam(name = "busca", required = false) String busca) {
         return questaoDao.listar(tema, busca);
     }
 

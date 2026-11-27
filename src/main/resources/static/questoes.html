@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Questões · Pesquisa de Satisfação</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<main>
+    <h1>Questões</h1>
+    <p class="sub">Banco de questões que podem ser usadas nas pesquisas. Uma mesma questão pode aparecer em várias pesquisas.</p>
+
+    <section class="cartao">
+        <h2>Nova questão</h2>
+        <form id="form-questao">
+            <div class="linha">
+                <div><label for="tipo">Tipo</label><select id="tipo" required></select></div>
+                <div><label for="tema">Tema</label><select id="tema" required></select></div>
+            </div>
+            <label for="enunciado">Enunciado</label>
+            <textarea id="enunciado" required minlength="5" placeholder="Ex.: Os funcionários são cordiais e prestativos."></textarea>
+
+            <div id="bloco-alternativas" hidden>
+                <label>Alternativas</label>
+                <div id="alternativas"></div>
+                <button type="button" class="secundario mini" id="mais-alternativa">+ alternativa</button>
+            </div>
+            <div class="acoes"><button type="submit">Salvar questão</button></div>
+        </form>
+    </section>
+
+    <section class="cartao">
+        <h2>Banco de questões</h2>
+        <div class="linha">
+            <div><label for="filtro-tema">Tema</label><select id="filtro-tema"></select></div>
+            <div><label for="filtro-busca">Buscar no enunciado</label><input type="text" id="filtro-busca" placeholder="Digite um trecho..."></div>
+        </div>
+        <p class="sub" id="contagem" style="margin:12px 0 8px"></p>
+        <div class="rolagem">
+            <table>
+                <thead><tr><th class="num">#</th><th>Enunciado</th><th>Tipo</th><th>Tema</th><th class="num">Usada em</th></tr></thead>
+                <tbody id="lista"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+<script src="js/comum.js"></script>
+<script src="js/questoes.js"></script>
+</body>
+</html>
