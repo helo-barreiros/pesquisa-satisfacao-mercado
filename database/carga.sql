@@ -16,7 +16,7 @@ SELECT v.id, v.nome, v.email, v.papel, v.grupo
 FROM (VALUES
  ( 1, 'Gerência do Mercado', 'admin@mercado.com',             'ADMIN',       NULL),
  -- Clube de Vantagens
- ( 2, 'Ana Souza',           'ana.souza@email.com',           'RESPONDENTE', 1),
+ ( 2, 'Heloísa Barreiros',   'heloisa.barreiros@email.com',   'RESPONDENTE', 1),
  ( 3, 'Bruno Lima',          'bruno.lima@email.com',          'RESPONDENTE', 1),
  ( 4, 'Carla Mendes',        'carla.mendes@email.com',        'RESPONDENTE', 1),
  ( 5, 'Daniel Rocha',        'daniel.rocha@email.com',        'RESPONDENTE', 1),

@@ -144,3 +144,20 @@ tr:hover td { background: #fafcfb; }
 }
 #aviso.visivel { opacity: 1; transform: none; }
 #aviso.erro { background: var(--perigo); }
+
+/* ---------- formulário de resposta (respondente) ---------- */
+.questao { border-top: 1px solid var(--borda); padding: 16px 0; }
+.questao:first-child { border-top: 0; padding-top: 0; }
+.questao .enunciado { font-weight: 600; margin-bottom: 2px; }
+.questao .obrig { color: var(--perigo); }
+.questao .meta { color: var(--suave); font-size: 13px; margin-bottom: 10px; }
+.escala { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.escala label {
+    display: flex; align-items: center; justify-content: center; width: 46px; height: 42px; margin: 0;
+    border: 1px solid var(--borda); border-radius: 6px; cursor: pointer; font-weight: 600; background: #fff;
+}
+.escala input { position: absolute; opacity: 0; pointer-events: none; }
+.escala label:has(input:checked) { background: var(--verde); border-color: var(--verde); color: #fff; }
+.escala .extremo { color: var(--suave); font-size: 13px; }
+.opcoes label { display: flex; align-items: center; gap: 8px; font-weight: 400; margin: 6px 0; cursor: pointer; }
+.opcoes input { width: auto; }

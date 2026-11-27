@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Responder · Pesquisa de Satisfação</title>
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<main>
+  <p><a href="minhas.html">← Minhas pesquisas</a></p>
+  <h1 id="titulo">Pesquisa</h1>
+  <p class="sub" id="descricao"></p>
+  <p class="info" id="aviso-anonima" hidden>Esta pesquisa é <strong>anônima</strong>: suas respostas são gravadas
+    sem o seu nome. O sistema só registra que você já respondeu.</p>
+
+  <form id="form" class="cartao">
+    <div id="questoes"></div>
+    <p class="sub"><span style="color:var(--perigo)">*</span> obrigatória</p>
+    <div class="acoes"><button type="submit" id="enviar">Enviar respostas</button></div>
+  </form>
+</main>
+<script src="js/comum.js"></script>
+<script src="js/responder.js"></script>
+</body>
+</html>
