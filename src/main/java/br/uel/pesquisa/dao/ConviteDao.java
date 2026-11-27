@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 //Tabela CONVITE quem deve responder cada pesquisa e quem já respondeu
 @Repository
@@ -79,5 +80,15 @@ public class ConviteDao {
     //pesquisas que o usuário foi convidado
     public List<MinhaPesquisa> listarDoUsuario(int idUsuario) {
         return jdbc.query(SELECT_MINHAS + " ORDER BY p.fim DESC", ConviteDao::mapearMinha, idUsuario);
+    }
+
+    public Optional<MinhaPesquisa> buscarDoUsuario(int idUsuario, int idPesquisa) {
+        return jdbc.query(SELECT_MINHAS + " AND c.id_pesquisa = ?", ConviteDao::mapearMinha, idUsuario, idPesquisa)
+                .stream().findFirst();
+    }
+
+    public void marcarRespondido(int idPesquisa, int idUsuario) {
+        jdbc.update("UPDATE convite SET dt_resp = CURRENT_TIMESTAMP WHERE id_pesquisa = ? AND id_usuario = ?",
+                idPesquisa, idUsuario);
     }
 }

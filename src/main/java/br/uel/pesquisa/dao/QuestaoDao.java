@@ -70,7 +70,7 @@ public class QuestaoDao {
     }
 
     //Todas as alternativas agrupadas pelo id_questao
-    private Map<Integer, List<Alternativa>> alternativasPorQuestao() {
+    public Map<Integer, List<Alternativa>> alternativasPorQuestao() {
         Map<Integer, List<Alternativa>> mapa = new HashMap<>();
         jdbc.query("SELECT id_alternativa, id_questao, ordem, texto FROM alternativa ORDER BY id_questao, ordem",
                 rs -> {
