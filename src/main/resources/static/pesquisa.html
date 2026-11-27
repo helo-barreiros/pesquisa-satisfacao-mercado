@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gerenciar pesquisa · Pesquisa de Satisfação</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+<main>
+    <p><a href="pesquisas.html">← Pesquisas</a></p>
+    <h1 id="titulo">Pesquisa</h1>
+    <p class="sub" id="resumo"></p>
+
+    <!-- RF3: montar a pesquisa com questões já cadastradas -->
+    <section class="cartao">
+        <h2>Questões da pesquisa</h2>
+        <p class="nota" id="bloqueio" hidden>Esta pesquisa já tem respostas, por isso as questões não podem mais ser alteradas.</p>
+        <div class="colunas">
+            <div>
+                <h3 style="margin:0 0 8px;font-size:15px">Escolhidas <span class="sub" id="qtd-escolhidas"></span></h3>
+                <ol class="escolhidas" id="escolhidas"></ol>
+                <div class="acoes"><button type="button" id="salvar-questoes">Salvar questões</button></div>
+            </div>
+            <div>
+                <h3 style="margin:0 0 8px;font-size:15px">Banco de questões</h3>
+                <div class="linha" style="margin-bottom:10px">
+                    <div><select id="filtro-tema"></select></div>
+                    <div><input type="text" id="filtro-busca" placeholder="Buscar..."></div>
+                </div>
+                <div class="rolagem" style="max-height:420px">
+                    <table><tbody id="banco"></tbody></table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RF4: indicar quem deve responder -->
+    <section class="cartao">
+        <h2>Convidados</h2>
+        <p class="info" id="aviso-anonima" hidden>Pesquisa anônima: a lista mostra só <strong>quem</strong> já respondeu,
+            nunca <strong>o que</strong> respondeu.</p>
+        <div class="linha">
+            <div><label for="grupo">Convidar um grupo inteiro</label><select id="grupo"></select></div>
+            <div class="fixo"><button type="button" id="convidar-grupo">Convidar grupo</button></div>
+            <div><label for="respondente">Convidar uma pessoa</label><select id="respondente"></select></div>
+            <div class="fixo"><button type="button" id="convidar-pessoa">Convidar</button></div>
+        </div>
+        <p class="sub" id="resumo-convites" style="margin:16px 0 8px"></p>
+        <div class="rolagem">
+            <table>
+                <thead><tr><th>Nome</th><th>E-mail</th><th>Grupo</th><th>Convidado em</th><th>Situação</th><th></th></tr></thead>
+                <tbody id="convidados"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+<script src="js/comum.js"></script>
+<script src="js/pesquisa.js"></script>
+</body>
+</html>
